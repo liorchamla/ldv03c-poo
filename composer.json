@@ -1,0 +1,6 @@
+{
+  "name": "gitpod/ldv03c-poo",
+  "require": {
+    "php": "8.0"
+  }
+}
