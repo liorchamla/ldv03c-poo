@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Notes de frais{% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+
+</head>
+<body class="container">
+    <nav>
+        <ul>
+            <li>
+                <strong>The Expense</strong>
+            </li>
+        </ul>
+        <ul>
+            {% if auth.getUser() %}
+                <li>
+                    <a href="/">Notes de frais</a>
+                </li>
+                <li>
+                    <a href="/expense/create">Créer</a>
+                </li>
+                <li>
+                    <a href="/logout">Déconnexion</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="/login">Connexion</a>
+                </li>
+                <li>
+                    <a href="/register">Inscription</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <article>
+        {% block page %}
+        {% endblock %}
+    </article>
+
+    <footer>
+        <p>Copyright Lior Chamla</p>
+    </footer>
+</body>
+</html>

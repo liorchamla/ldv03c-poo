@@ -1,0 +1,15 @@
+{% extends "theme.twig" %}
+
+{% block title %}
+    Connexion au site
+{% endblock %}
+
+{% block page %}
+    
+    <h1>Connexion au site</h1>
+    <form action="/login" method="POST">
+        <input type="email" name="email" placeholder="Adresse email">
+        <input type="password" name="password" placeholder="Mot de passe">
+        <button>Connexion</button>
+    </form>
+{% endblock %}

@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Request;
-use App\User\Login;
-use App\User\PasswordHash;
+use App\User\Action\Login;
+use App\User\Service\PasswordHash;
 use App\User\User;
 use App\User\UserRepository;
 use PHPUnit\Framework\TestCase;

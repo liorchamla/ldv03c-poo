@@ -1,0 +1,13 @@
+{% extends "theme.twig" %}
+
+{% block title %}Créer une note de frais{% endblock %}
+
+{% block page %}
+    <h1>Créer une note de frais</h1>
+
+    <form action="/expense/save" method="POST">
+        <input type="text" name="subject" id="subject" placeholder="Sujet de la note de frais">
+        <input type="number" step="0.01" name="amount" id="amount" placeholder="Montant de la note de frais">
+        <button>Créer</button>
+    </form>
+{% endblock %}

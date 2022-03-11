@@ -24,7 +24,13 @@ class UserRepository implements UserRepositoryInterface
             return null;
         }
 
-        $user = new User($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $user = new User(
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            $data['id']
+        );
         return $user;
     }
 

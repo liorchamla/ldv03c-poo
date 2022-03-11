@@ -1,23 +1,20 @@
 <?php
 
 use App\DI\Container;
-use App\User\Action\Export;
-use App\User\Action\Login;
-use App\User\Action\LoginForm;
-use App\User\Action\Register;
-use App\User\Action\RegisterForm;
-use App\User\Service\PasswordHash;
+use App\Expense\ExpenseRepository;
+use App\Expense\ExpenseRepositoryInterface;
+use App\Http\Session;
+use App\Http\SessionInterface;
+use App\Renderer\Renderer;
+use App\Renderer\RendererInterface;
+use App\Renderer\TwigRenderer;
+use App\User\Service\Authentication;
 use App\User\UserRepository;
 use App\User\UserRepositoryInterface;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 $container = new Container;
-
-$container->set(RegisterForm::class, fn () => new RegisterForm);
-$container->set(Register::class, fn (Container $c) => new Register(
-    $c->get(PasswordHash::class),
-    $c->get(UserRepositoryInterface::class)
-));
-$container->set(Export::class, fn () => new Export);
 
 $container->set(PDO::class, function () {
     $path = __DIR__ . "/../data.db";
@@ -25,28 +22,26 @@ $container->set(PDO::class, function () {
     return $pdo;
 });
 
-$container->set(UserRepository::class, function (Container $c) {
-    $pdo = $c->get(PDO::class);
-    return new UserRepository($pdo);
+$container->alias(UserRepositoryInterface::class, UserRepository::class);
+$container->alias(SessionInterface::class, Session::class);
+
+$container->alias(RendererInterface::class, TwigRenderer::class);
+
+$container->alias(ExpenseRepositoryInterface::class, ExpenseRepository::class);
+
+$container->set(Renderer::class, function () {
+    return new Renderer(__DIR__ . '/../templates');
 });
 
-$container->set(PasswordHash::class, function () {
-    return new PasswordHash;
+$container->set(Environment::class, function (Container $c) {
+    $loader = new FilesystemLoader([__DIR__ . '/../templates']);
+    $twig = new Environment($loader);
+
+    $twig->addGlobal('auth', $c->get(Authentication::class));
+    $twig->addGlobal('session', $c->get(SessionInterface::class));
+
+    return $twig;
 });
 
-$container->set(UserRepositoryInterface::class, function (Container $c) {
-    return $c->get(UserRepository::class);
-});
-
-$container->set(Login::class, function (Container $c) {
-    return new Login(
-        $c->get(PasswordHash::class),
-        $c->get(UserRepositoryInterface::class)
-    );
-});
-
-$container->set(LoginForm::class, function () {
-    return new LoginForm;
-});
 
 return $container;
